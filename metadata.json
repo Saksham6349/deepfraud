@@ -1,0 +1,8 @@
+{
+  "name": "DeepFraud",
+  "description": "Real-time AI fraud & deepfake detection platform for enterprise security.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
