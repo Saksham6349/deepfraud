@@ -1,6 +1,6 @@
 import { AnalysisResult, User, RiskLevel, DashboardStat } from "../types";
-import { auth, db, googleProvider } from "./firebaseConfig";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, signOut, onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+import { auth, db } from "./firebaseConfig";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { collection, addDoc, getDocs, query, orderBy, limit, deleteDoc, getDocsFromCache } from "firebase/firestore";
 
 const DB_KEY = 'deepfraud_db_v1';
@@ -74,17 +74,6 @@ export const api = {
             if (error.code === 'auth/email-already-in-use') {
                 throw new Error("This email is already registered. Please sign in instead.");
             }
-            throw new Error(error.message);
-        }
-    },
-    
-    loginWithGoogle: async (): Promise<User> => {
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            const user = mapFirebaseUser(result.user);
-            localStorage.setItem(AUTH_KEY, JSON.stringify(user));
-            return user;
-        } catch (error: any) {
             throw new Error(error.message);
         }
     },
