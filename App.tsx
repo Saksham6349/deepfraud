@@ -5,7 +5,7 @@ import History from './components/History';
 import Dashboard from './components/Dashboard';
 import Settings from './components/Settings';
 import Login from './components/Login';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
 import { User } from './types';
 import { api } from './services/api';
 
@@ -54,7 +54,14 @@ const App: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="min-h-screen bg-slate-950"></div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-500 gap-4">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
+        <p className="text-xs font-mono tracking-widest uppercase">Initializing Secure Environment...</p>
+      </div>
+    );
+  }
 
   if (!user) {
     return <Login onLogin={handleLogin} />;
