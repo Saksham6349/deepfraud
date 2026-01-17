@@ -5,7 +5,7 @@ import History from './components/History';
 import Dashboard from './components/Dashboard';
 import Settings from './components/Settings';
 import Login from './components/Login';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { User } from './types';
 import { api } from './services/api';
 
@@ -16,12 +16,26 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing session
-    const session = api.auth.getSession();
-    if (session) {
-      setUser(session);
-    }
-    setLoading(false);
+    const initAuth = async () => {
+        // Check local storage first (fast)
+        let session = api.auth.getSession();
+        
+        // If empty, try to recover from Supabase (e.g. after OAuth redirect)
+        if (!session) {
+            try {
+                session = await api.auth.recoverSession();
+            } catch (e) {
+                console.warn("Session recovery check failed", e);
+            }
+        }
+
+        if (session) {
+          setUser(session);
+        }
+        setLoading(false);
+    };
+    
+    initAuth();
   }, []);
 
   const handleLogin = (authenticatedUser: User) => {
@@ -54,14 +68,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-500 gap-4">
-        <Loader2 className="w-8 h-8 animate-spin text-emerald-500" />
-        <p className="text-xs font-mono tracking-widest uppercase">Initializing Secure Environment...</p>
-      </div>
-    );
-  }
+  if (loading) return <div className="min-h-screen bg-slate-950"></div>;
 
   if (!user) {
     return <Login onLogin={handleLogin} />;
