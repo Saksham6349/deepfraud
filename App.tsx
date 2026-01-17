@@ -16,28 +16,12 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initAuth = async () => {
-        // 1. Check local storage (fast)
-        let session = api.auth.getSession();
-        
-        // 2. Check with backend (Firebase auto-restore)
-        // Even if we have a local session, verifying with Firebase ensures token validity
-        try {
-            const recovered = await api.auth.recoverSession();
-            if (recovered) {
-                session = recovered;
-            }
-        } catch (e) {
-            console.warn("Session recovery check failed", e);
-        }
-
-        if (session) {
-          setUser(session);
-        }
-        setLoading(false);
-    };
-    
-    initAuth();
+    // Check for existing session
+    const session = api.auth.getSession();
+    if (session) {
+      setUser(session);
+    }
+    setLoading(false);
   }, []);
 
   const handleLogin = (authenticatedUser: User) => {
