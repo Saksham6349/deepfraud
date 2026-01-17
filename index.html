@@ -1,136 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeepFraud AI</title>
-
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Tailwind Config -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            slate: {
-              850: '#151f2e',
-              900: '#0f172a',
-              950: '#020617',
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeepFraud AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
             },
-            emerald: {
-              400: '#34d399',
-              500: '#10b981',
-              900: '#064e3b',
-            }
-          },
-          animation: {
-            'scan': 'scan 2s linear infinite',
-            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-          },
-          keyframes: {
-            scan: {
-              '0%': { transform: 'translateY(-100%)' },
-              '100%': { transform: 'translateY(100%)' },
+            colors: {
+              slate: {
+                850: '#151f2e',
+                900: '#0f172a',
+                950: '#020617',
+              },
+              emerald: {
+                400: '#34d399',
+                500: '#10b981',
+                900: '#064e3b',
+              }
+            },
+            animation: {
+              'scan': 'scan 2s linear infinite',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              scan: {
+                '0%': { transform: 'translateY(-100%)' },
+                '100%': { transform: 'translateY(100%)' },
+              }
             }
           }
         }
       }
-    }
-  </script>
+    </script>
+    <style>
+      body {
+        background-color: #020617;
+        color: #f8fafc;
+        background-image: 
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        background-position: center top;
+      }
+      
+      /* Vignette */
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0; 
+        left: 0;
+        width: 100%; 
+        height: 100%;
+        background: radial-gradient(circle at center, transparent 0%, #020617 90%);
+        pointer-events: none;
+        z-index: -1;
+      }
 
-  <!-- Styles -->
-  <style>
-    body {
-      background-color: #020617;
-      color: #f8fafc;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      background-position: center top;
-      font-family: 'Inter', sans-serif;
-    }
-
-    /* Vignette */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: radial-gradient(circle at center, transparent 0%, #020617 90%);
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .glass-panel {
-      background: rgba(13, 18, 30, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-      padding: 2rem;
-      border-radius: 1rem;
-      text-align: center;
-    }
-
-    .tech-border { position: relative; }
-    .tech-border::before { content: ''; position: absolute; top: 0; left: 0; width: 10px; height: 1px; background: rgba(255,255,255,0.4); }
-    .tech-border::after { content: ''; position: absolute; top: 0; left: 0; width: 1px; height: 10px; background: rgba(255,255,255,0.4); }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-  </style>
-
-  <!-- Import Map for React & libraries -->
+      .glass-panel {
+        background: rgba(13, 18, 30, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+      }
+      
+      .tech-border {
+        position: relative;
+      }
+      .tech-border::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 10px; height: 1px;
+        background: rgba(255,255,255,0.4);
+      }
+      .tech-border::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 1px; height: 10px;
+        background: rgba(255,255,255,0.4);
+      }
+      
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155; 
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569; 
+      }
+    </style>
   <script type="importmap">
-  {
-    "imports": {
-      "react/": "https://esm.sh/react@^19.2.3/",
-      "react": "https://esm.sh/react@^19.2.3",
-      "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-      "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
-      "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-      "recharts": "https://esm.sh/recharts@^3.6.0",
-      "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
-    }
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
   }
-  </script>
+}
+</script>
 </head>
-
-<body>
-  <div id="root"></div>
-
-  <!-- React App Script -->
-  <script type="module">
-    import React from "react";
-    import ReactDOM from "react-dom/client";
-
-    // Example App component
-    function App() {
-      return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="glass-panel">
-            <h1 className="text-4xl font-bold mb-4 text-emerald-400">DeepFraud AI</h1>
-            <p className="text-slate-200">Your AI-powered fraud detection dashboard</p>
-          </div>
-        </div>
-      );
-    }
-
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<App />);
-  </script>
-</body>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
